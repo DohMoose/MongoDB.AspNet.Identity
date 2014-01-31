@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+using System.Collections.Generic;
 
 
 namespace MongoDB.AspNet.Identity
@@ -29,6 +29,11 @@ namespace MongoDB.AspNet.Identity
         /// </summary>
         /// <value>The password hash.</value>
 		public virtual string PasswordHash { get; set; }
+        /// <summary>
+        /// Gets or sets the email
+        /// </summary>
+        /// <value>The email of the user.</value>
+       public virtual string Email { get; set; }
         /// <summary>
         /// Gets or sets the security stamp.
         /// </summary>

@@ -16,7 +16,7 @@ namespace MongoDB.AspNet.Identity
     /// </summary>
     /// <typeparam name="TUser">The type of the t user.</typeparam>
     public class UserStore<TUser> : IUserLoginStore<TUser>, IUserClaimStore<TUser>, IUserRoleStore<TUser>,
-        IUserPasswordStore<TUser>, IUserSecurityStampStore<TUser>
+        IUserPasswordStore<TUser>, IUserSecurityStampStore<TUser>, IUserEmailStore<TUser>
         where TUser : IdentityUser
     {
         #region Private Methods & Variables
@@ -537,6 +537,38 @@ namespace MongoDB.AspNet.Identity
                 throw new ObjectDisposedException(GetType().Name);
         }
 
+
+        public Task SetEmailAsync(TUser user, string email)
+        {
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            if (email == null)
+                throw new ArgumentNullException("email");
+
+            user.Email = email;
+
+            return Task.FromResult(0);
+
+        }
+
+        public Task<string> GetEmailAsync(TUser user)
+        {
+            ThrowIfDisposed();
+            if (user == null)
+                throw new ArgumentNullException("user");
+
+            return Task.FromResult(user.Email);
+        }
+
+        public Task<TUser> FindByEmailAsync(string email)
+        {
+            ThrowIfDisposed();
+            var user = db.GetCollection<TUser>("AspNetUsers").FindOne((Query.EQ("Email", email)));
+            return Task.FromResult(user);
+        }
+        
         #endregion
     }
 }
